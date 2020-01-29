@@ -45,14 +45,25 @@ last_period <- Rblpapi::bdp(
    dplyr::pull() %>%
    stringr::str_remove(':')
 
-revenue    <- f(ticker, 'revenue', c('IS_COMP_SALES','BEST_SALES'))
-ebitda     <- f(ticker, 'ebitda', c('IS_COMPARABLE_EBITDA', 'BEST_EBITDA'))
-net.income <- f(ticker, 'net income', c('IS_COMP_NET_INCOME_ADJUST', 'BEST_NET_INCOME'))
-eps        <- f(ticker, 'eps', c('IS_COMP_EPS_ADJUSTED', 'BEST_EPS'))  
+revenue    <- f(ticker, 
+                'revenue', 
+                c('IS_COMP_SALES','BEST_SALES'))
+
+ebitda     <- f(ticker, 
+                'ebitda', 
+                c('IS_COMPARABLE_EBITDA', 'BEST_EBITDA'))
+
+net.income <- f(ticker, 
+                'net income', 
+                c('IS_COMP_NET_INCOME_ADJUST', 'BEST_NET_INCOME'))
+
+eps        <- f(ticker, 
+                'eps', 
+                c('IS_COMP_EPS_ADJUSTED', 'BEST_EPS'))  
 
 dat <- dplyr::rbind_all(revenue, ebitda, net.income, eps)
-   
-   p <- dat %>%
+
+p <- dat %>%
    tibble::rownames_to_column('metric') %>%
    reshape2::melt(id.vars = 'metric') %>%
    dplyr::mutate(
